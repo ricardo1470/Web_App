@@ -6,11 +6,13 @@ import forms
 from models import Task
 from datetime import datetime
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     tasks = Task.query.all()
     return render_template('index.html', tasks=tasks)
+
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -24,11 +26,12 @@ def add():
         return redirect(url_for('index'))
     return render_template('add.html', form=form)
 
+
 @app.route('/edit/<int:task_id>', methods=['GET', 'POST'])
 def edit(task_id):
     task = Task.query.get(task_id)
-    form =  forms.AddTaskForm()
-    
+    form = forms.AddTaskForm()
+
     if task:
         if form.validate_on_submit():
             task.title = form.title.data
@@ -45,10 +48,10 @@ def edit(task_id):
 
 
 @app.route('/delete/<int:task_id>', methods=['GET', 'POST'])
-def edit(task_id):
+def delete(task_id):
     task = Task.query.get(task_id)
-    form =  forms.DeleteTaskForm()
-    
+    form = forms.DeleteTaskForm()
+
     if task:
         if form.validate_on_submit():
             db.session.delete(task)
